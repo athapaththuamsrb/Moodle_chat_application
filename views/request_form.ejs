@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Request Application</title>
+<link rel="stylesheet" type="text/css" href="/styles/all.css">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	#application{
+					padding: 10px;
+					}
+	#loginButton{
+					width:250px;
+					background-color:blue;
+	}	
+	body, html {	margin-top: 10px;
+					background-image:url("/photos/i1.jpg");
+					background-position: center;
+					background-repeat: no-repeat;
+					background-size: cover;
+					font-family: sans-serif;
+				}
+	html{
+  			overflow-x:scroll;
+  			overflow-y:scroll;}
+	#cover{			
+					background-color: rgb(0,0,0,0.3);
+					width: 800px;
+					margin: auto;
+					border-bottom-right-radius: 15px ;
+					border-bottom-left-radius: 15px;
+
+					}	
+	#other{			text-align:left;
+						padding:20px;}
+
+	#field{
+		width: 100%;
+		height: 100px;		
+	}
+	.field{
+		margin-left: 50px;
+		width: 150 px;
+		font-size: 18px;
+		font-weight: 700;
+	}
+	#indexField{
+		display: inline-block;
+		width: 150px;
+	}
+	#intro{
+		text-align: center;
+	}
+	.buttons{
+		text-align: center;
+		margin-top: -20px;
+	}
+	#submitButton, #cancelButton, #resetButton{
+		background-color: rgb(225,220,220);
+		display: inline-block;
+		margin: 0px 0px 0px 20px;
+		font-size: 20px;
+		text-align: center;
+		border-radius: 12px;
+		border: 2px solid #366473;
+		padding: 5px 15px;
+		outline: none;
+		cursor: pointer;
+		transition: 0.25px;
+	}
+	i{
+		color:white;
+		font-size: 2rem;
+		padding-left:20px;}
+		
+		
+	#hideWord {
+			visibility: hidden;
+			/* Position the tooltip */
+			position: absolute;
+			z-index: 1;
+			font-size:50%;
+			background-color:red;
+			padding-left:2px;
+			}
+	#iconBack #hideWord::after {
+			content: " ";
+			position: absolute;
+			top: 50%;
+			right: 100%; /* To the left of the tooltip */
+			margin-top: -5px;
+			border-width: 5px;
+			border-style: solid;
+			border-color: transparent red transparent transparent;
+			}		
+
+	#iconBack:hover #hideWord {
+			visibility: visible;
+	}	
+		
+		
+
+	.topic{
+		width: 800px;
+		background-color: rgb(0,0,0,0.6);
+		margin: auto;
+		color: white;
+		padding: 10px 0px 10px 0px;
+		text-align: center;
+		border-radius: 15px 15px 0px 0px;
+	}
+	#index{
+		position: relative;
+		line-height: 40px;
+		border-radius: 6px;
+		padding: 0 37px;
+		font-size: 16px;
+		left: 98px;
+		width: 350px;
+	}
+	#reqType,#lectuer{
+		position: relative;
+		line-height: 40px;
+		border-radius: 6px;
+		padding: 0 22px;
+		font-size: 16px;
+		left: 300px;
+		top: -20px;
+		border: 2px black solid;
+		width: 430px;
+		margin-bottom: 20px;
+	}
+	#name,#Department, #email, #ContactNo , #reason, #description, #file {
+		position: relative;
+		line-height: 40px;
+		border-radius: 6px;
+		padding: 0 37px;
+		font-size: 16px;
+		left: 300px;
+		top: -37px;
+		width: 350px;
+	}
+	#description{
+		border: 2px solid black;
+		height: 150px;
+	}
+</style>
+</head>
+<body>
+	<div class="topic"><h1>Request Form</h1></div>
+	<div id="cover">
+	<form id="application" enctype="multipart/form-data" action="/dashboard/requestForm" method="post">
+		
+		<div id="field">
+			<br>
+		<label for="index"><h2 class="field" id="indexField">Index Number</h2></label>
+		<input placeholder="Index no" type="text" id="index" value="<%= index %>"  readonly>
+		</div>
+		
+		<label for="Name"><h2 class="field">Name with Initials</h2></label>
+		<input placeholder="Name with Initials" type="text" id="name"  value="<%= fullName %>"  readonly>
+	
+		<label for="department"><h2 class="field">Department</h2></label>
+		<input placeholder="Department" type="text" id="Department"  value="<%= department %>" readonly>
+
+		<label for="email"><h2 class="field">Email</h2></label>
+		<input placeholder="Email" type="email" id="email"  value="<%= email %>" readonly>
+
+		<label for="ContactNo"><h2 class="field">Contact Number</h2></label>
+		<input  placeholder="012-3456789" type="tel" id="ContactNo" pattern="[0-9]{10}"  value="<%= contact %>" readonly>
+
+		<h2 class="field">Request type:</h2>
+			<select id="reqType" name="reqtype" required>
+				<option></option>
+				<option>Leave Request</option>
+				<option>Field Change Request</option>
+				<option>Repeat Registration Request</option>
+			</select>
+		<label for="reason"><h2 class="field">Reason of Request</h2></label>
+		<input placeholder="Reason of Request" type="text" id="reason" name="reason" maxlength="100" required>
+		<h2 class="field">Lecturer name:</h2>
+			<select id="lectuer" name="lecturer" required>
+				<option></option>
+				<% requests.forEach((req) => { %>
+					<option><%= req.userName%></option>
+				<% }); %>
+			</select>
+		<label for="description"><h2 class="field">Description</h2></label>	
+		<textarea style="resize: none;" placeholder="Description" type="text" id="description"  name="description" maxlength="500" required></textarea>
+
+		<label for="file"><h2 class="field">Supporting Docs</h2></label>
+		<input placeholder="Document" type="file" multiple id="file" name ="files" required>
+
+	<div class="buttons">
+		<button id="submitButton" type="submit">Submit</button>
+	</div>
+	</form>	
+</body>
+</html>

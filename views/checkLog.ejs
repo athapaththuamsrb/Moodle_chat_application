@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>check log out</title>
+    
+    <style type="text/css">
+       fieldset{
+            position: absolute;
+            top:30%;
+            left:30%;
+            background-color: white;
+        }
+
+    body { 
+		background: url("photos/coverPC.jpg")  no-repeat center center fixed; 
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}    
+    </style>
+</head>
+<body>
+        <fieldset>
+            <legend>Confirm</legend>
+            <p>You are already logged in as <?php echo "{$_SESSION["userName"]}";?>,
+             you need to log out before logging in as different user.</p>
+             <hr> 
+             <button id="logout" type="submit" id="btn" name="logout" onclick="logout()">Log out</button>
+             <button id="loginButton" type="submit" id="btn" name="cancal" onclick="back()">Cancal</button>
+        </fieldset>
+    <script type="text/javascript">
+    function logout(){
+        window.location.href ="http://localhost:5000/signOut";
+    }
+    function back(){
+        window.location.href ="http://localhost:5000/dashboard";
+    }
+    </script>
+</body>
+</html>

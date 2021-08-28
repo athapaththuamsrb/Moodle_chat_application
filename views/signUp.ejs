@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Request Application</title>
+<link rel="stylesheet" type="text/css" href="/styles/all.css">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	#application{
+		padding: 10px;
+	}
+	#loginButton{
+		width:250px;
+		background-color:blue;
+	}	
+	body, html {
+		margin-top: 10px;
+		background-image:url("/photos/i1.jpg");
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		font-family: sans-serif;
+	}
+	html{
+		overflow-x:scroll;
+		overflow-y:scroll;
+	}
+	#cover{			
+		background-color: rgb(0,0,0,0.3);
+		width: 800px;
+		margin: auto;
+		border-bottom-left-radius: 15px;
+		border-bottom-right-radius: 15px;
+	}	
+	#other{
+		text-align:left;
+		padding:20px;
+	}
+
+	#field{
+		width: 100%;
+		height: 100px;		
+	}
+	.field{
+		margin-left: 100px;
+		width: 200 px;
+		font-size: 18px;
+		font-weight: 700;
+	}
+	#intro{
+		text-align: center;
+	}
+	.buttons{
+		text-align: center;
+			
+	}
+	#submitButton{
+		background-color: rgb(225, 220, 220);
+		display: inline-block;
+		font-size: 20px;
+		text-align: center;
+		border-radius: 12px;
+		border: 2px solid black;
+		padding: 5px 15px;
+		outline: none;
+		cursor: pointer;
+		transition: 0.25px;
+	}	
+		
+	#hideWord {
+		visibility: hidden;
+		/* Position the tooltip */
+		position: absolute;
+		z-index: 1;
+		font-size:50%;
+		background-color:red;
+		padding-left:2px;
+	}
+	#iconBack #hideWord::after {
+		content: " ";
+		position: absolute;
+		top: 50%;
+		right: 100%; /* To the left of the tooltip */
+		margin-top: -5px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: transparent red transparent transparent;
+	}		
+
+	#iconBack:hover #hideWord {
+		visibility: visible;
+	}	
+
+	.topic{
+		width: 800px;
+		background-color: rgb(0,0,0,0.6);
+		margin: auto;
+		color: white;
+		padding: 10px 0px 10px 0px;
+		text-align: center;
+		border-radius: 15px 15px 0px 0px;
+	}
+	#index{
+		position: relative;
+		line-height: 40px;
+		border-radius: 6px;
+		padding: 0 37px;
+		font-size: 16px;
+		left: 400px;
+		top: -20px;
+	}
+	#Department{
+		position: relative;
+		line-height: 40px;
+		border-radius: 6px;
+		padding: 0 13px;
+		font-size: 16px;
+		left: 400px;
+		top: -20px;
+		margin-bottom: 15px;
+		border:2px solid black;
+	}
+
+	#UserName, #email, #ContactNo , #password, #confirmPW , #type, #Index, #fullName{
+		position: relative;
+		line-height: 40px;
+		border-radius: 6px;
+		padding: 0 37px;
+		font-size: 16px;
+		left: 400px;
+		top: -37px;
+	}
+	#invalid{
+		width: 72%;
+		height:40px;
+		position: relative;
+		text-align:center;
+		left: 13%;
+	}
+
+</style>
+</head>
+<body>
+	<div class="topic"><h1>Add New User</h1></div>
+	<div id="cover">
+		<div id="invalid">
+			<% if (invalidLogin){ %>
+				<p><%= message %></p>
+			<% } %>
+		</div>
+		<form id="application" action="/signUp" method="post">
+		
+			<div id="field">
+				<br>
+			<label for="UserName"><h2 class="field">Username</h2></label>
+			<input placeholder="Username" type="text" id="UserName" name="UserName" required>
+			</div>
+			
+			<div class="textbox">
+				<label for="Type"><h2 class="field">Account Type</h2></label>
+				<div id="type">
+				<label for="student">Student</label>
+				<input  type="radio" name="typ" id="student" value="student" checked>
+				<br>
+				<label for="staff">Staff</label>
+				<input  type="radio" name="typ" id="staff" value="staff">
+				</div>
+			</div>
+	
+			<label for="Email"><h2 class="field">Email Address</h2></label>
+			<input placeholder="Email Address" type="email" id="email" name="email" required>
+		
+			<label for="ContactNo"><h2 class="field">Contact Number</h2></label>
+			<input placeholder="0123456789" type="tel" id="ContactNo" pattern="[0-9]{10}" name="telephone"  required>
+	
+			<div id="hide">
+				<label for="Index"><h2 class="field">Index Number</h2></label>
+				<input placeholder="Index Number" type="text" id="Index"  name="index">	
+	
+				<h2 class="field">Department :</h2>
+				<select id="Department" name="department">
+					<option>Biomedical Engineering</option>
+					<option>Chemical Engineering</option>
+					<option>Civil Engineering</option>
+					<option>Computer Science Engineering</option>
+					<option>Electrical Engineering</option>
+					<option>Electronic Engineering</option>
+					<option>Material Engineering</option>
+					<option>Mechanical Engineering</option>
+				</select>
+			</div>
+	
+			<label for="password"><h2 class="field">Password</h2></label>
+			<input placeholder="Password" type="password" id="password" name="password" required>
+	
+			<label for="confirmPW"><h2 class="field">Confirm Password</h2></label>
+			<input  placeholder="Confirm Password" type="password" id="confirmPW" required>
+	
+		
+			<div class="buttons">
+				<button id="submitButton" type="submit" name="submit" onclick="return Validate()">Submit</button>
+			</div>
+			<p id="other"><a  href="./">Do you need to go back?</a></p>
+		</form>
+
+	<script type="text/javascript">
+		document.getElementById("type").addEventListener("change",dothis);
+			function dothis(){
+					var radios = document.getElementsByName("typ");
+					var selected = Array.from(radios).find(radio => radio.checked);
+					var doThis=document.getElementById("hide").style.display
+					if(selected.value=="staff"){				
+						document.getElementById("hide").style.display="none";
+						document.getElementById("department").required = false;
+						document.getElementById("Index").required = false;
+					}
+					else{
+						document.getElementById("hide").style.display="block";
+						document.getElementById("department").required = true;
+						document.getElementById("Index").required = true;
+						}
+					}
+		function Validate(){
+			var password = document.getElementById("password").value;
+			var confirmPassword = document.getElementById("confirmPW").value;
+			if (password != confirmPassword) {
+				alert("Passwords do not match.");
+				return false;
+			}
+			return true;
+			}
+			
+		</script>
+</body>
+</html>

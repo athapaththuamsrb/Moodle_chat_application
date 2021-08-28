@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Requests</title>
+	<link rel="stylesheet" type="text/css" href="/styles/all.css">
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$("#myInput").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$("#myTable tr").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+		});
+	</script>
+<style>
+	:root{
+		--Pending_display: "table-row";
+		--Accepted_display: "table-row";
+		--Rejected_display: "table-row";
+	}
+	.pending{
+		display: var(--Pending_display);
+		cursor: pointer;
+		background-color:#f8ff4c;
+	}
+	.accepted{
+		display: var(--Accepted_display);
+		cursor: pointer;
+		background-color:#caffb9;
+	}
+	.rejected{
+		display: var(--Rejected_display);
+		cursor: pointer;
+		background-color:#f06960 ;
+	}
+
+	table, th, td {
+		border-collapse: collapse;
+	}
+	td{
+		border: black solid;
+	}
+	th, td {
+		padding: 5px;
+		text-align: center;    
+	}
+	#requestTable{
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		border: black solid;
+	}
+	#requestTable th {
+		background-color: black;
+		color: white;
+		padding: 10px;
+	}
+
+	#requestTable tr:nth-child(even) {
+		border: black solid;
+
+	}
+	#requestTable tr:nth-child(odd) {
+		border: black solid;
+	}
+	#tbl_div{
+		margin-top:1%;
+		background-color: rgb(0, 0, 0, 0.3);
+		border-radius: 15px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+
+	}
+	.red2{    
+		text-decoration:none;
+		background:#8B0000;
+		color:white;
+		padding-left:10px;
+		padding-right:10px;
+		border-right:solid;
+		width:30%;
+	  }
+	#red{   
+		position:absolute;
+		top:-5px;
+		left:1300px;
+
+	  }
+	#login{     
+		color:white;
+		position: relative;
+		display: block;
+		text-align: right;
+		padding-right: 10px;
+		font-size: 16px;
+	  }
+	*{
+		padding:0;
+		margin:0;
+		text-decoration:none;
+		list-style:none;
+		box-sizing:border-box;
+	  }
+	nav ul{
+		float:right;
+		margin-right:20px;
+		}
+	nav ul li{
+		display:inline-block;
+		line-height:80px;
+		margin: 0 5px;
+		transition:.5s;
+		color:white;
+		font-size:17px;
+		}
+	nav ul li a{
+		color:white;
+		border-right:solid;
+		padding:10px;
+		}
+
+	.checkbt{
+	  font-size:30px;
+	  color:black;
+	  float:right;
+	  line-height:80px;
+	  margin-right:30px;
+	  cursor:pointer;
+	  display:none;
+	}
+	#checkbox{
+	  display: none;
+	}
+	#icon{
+	  font-size:20px;
+	  color:white;
+	  border-left :solid 3px white;
+	  border-right:none;
+	  font-size: 16px;
+	  
+	}
+	a:visited{
+	  color:white;
+	} 
+	a:hover,a:active{
+	  color:yellowgreen;
+	}
+	#icon:hover{
+	  color: yellowgreen;
+	}
+	#hide {
+	  visibility: hidden;
+	  /* Position the tooltip */
+	  position: absolute;
+	  z-index: 1;
+	  font-size:50%;
+	  background-color:red;
+	  padding-left:2px;
+	  }
+	#icon #hide::after {
+	  content: " ";
+	  position: absolute;
+	  top: 50%;
+	  right: 100%; /* To the left of the tooltip */
+	  margin-top: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: transparent red transparent transparent;
+	  }   
+
+	#icon:hover #hide {
+	  visibility: visible;
+	}
+	  
+	@media(max-width:900px){
+
+		nav ul li a{
+		  font-size:16px;
+		  border-right:none;
+		}
+		.checkbt{
+		  display:block;
+		}
+		ul{
+		  position:fixed;
+		  width:100%;
+		  height:100vh;
+		  background:#2c3e50;
+		  top:80px;
+		  left:-100%;
+		  text-align:center;
+		}
+		nav ul li{
+		  display:block;}
+		nav ul li {
+		  font-size:20px;}  
+
+		#checkbox:checked ~ul{
+		  left:0;
+
+		}
+	}
+	.container{
+		background-color: rgb(0, 0, 0, 0.5);
+		width:100%;
+		height: 175px;
+	}
+	body { 
+		background: url("/photos/i1.jpg") no-repeat center center fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+		font-family: sans-serif;
+	}
+	
+	#myReq{
+		color: white;
+		display: block;
+		padding: 10px;
+		text-align: center;
+		font-size: 50px;
+	}
+	#filterSelect{
+		border-radius: 6px;
+	}
+</style>
+</head>
+<body onload="init()">
+	<div  >
+	<nav class="container">
+		<input type="checkbox" id="checkbox">
+		<label for="checkbox" class="checkbt"><i class="fas fa-align-justify"></i></label>
+		<h1 id="myReq">My Requests</h1>
+		<label id="login">Welcome : <%= fullname %></label> 
+		<ul>
+			<li><input id="myInput" type="text" placeholder="Search.."></li>
+			<li >Filter:
+				<select id="filterSelect">
+						<option selected>All</option>
+						<option>Pending</option>
+						<option>Accepted</option>
+						<option>Rejected</option>
+				</select>
+			</li>
+			<li><a href="/signOut" id="icon">Logout</a></li>
+		</ul>
+	</nav>
+	</div>
+	<div id="tbl_div">
+		<table id="requestTable" style="width:90%">
+			<tr id="headRow">
+				<th>Request id</th>
+				<th>Made By</th>
+				<th>Type</th>
+				<th>Reason</th>
+				<th>Date</th>
+				<th>Status</th>
+			</tr>
+			<tbody id="myTable">
+				<tr id="headRow1">
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			<% requests.forEach((req) => { %>
+				<tr id="row_<%= req.requestId %>" class="<%= req.status %>">
+					<td style="width: 120px;"><%= req.requestId %></td>
+					<td style="width: 100px;"><%= req.userName %></td>
+					<td style="width: 300px;"><%= req.reqtype %></td>
+					<td style="width: 500px;"><%= req.reason %></td>
+					<td style="width: 200px;"><%= req.lastModification %></td>
+					<td style="width: 100px;"><%= req.status %></td>
+				</tr>
+			<% }); %>
+			</tbody>
+		</table>
+	</div>
+	<script src="/scripts/socket.io.js"></script>
+	<script src="/scripts/utils.js"></script>
+	<script type="text/javascript" defer>
+		const headRow1 = document.getElementById("headRow1");
+		function init(){
+			let socket = io();
+			
+			socket.on('newRequest', function (req){
+				insert(req);
+			});
+			
+			const table = document.getElementById("myTable");
+			table.addEventListener("click", (e) => {
+				const clkRow = e.target.parentElement;
+				if (clkRow.id==="headRow1") return;
+				const clkId = clkRow.children[0].innerText;
+				window.open(`dashboard/request_view?id=${clkId}`, '_blank');
+			});
+
+			socket.on('updateStatus', function (data){
+				let row = document.getElementById("row_"+data.reqId);
+				if (row){
+					row.setAttribute("class", data.status);
+					let status_td = row.children.item(5);
+					status_td.innerText = data.status;
+					let date_td = row.children.item(4);
+					date_td.innerText = formatDate(data.date);
+				}
+				location.replace("http://localhost:5000/test");
+			});
+			socket.on('updatePossition', function (data){
+				let row = document.getElementById("row_"+data.insertId);
+				if (row){
+					let date_td = row.children.item(4);
+					date_td.innerText = formatDate(data.lastModification);
+				}
+				location.replace("http://localhost:5000/test");
+			});
+
+			const root = document.documentElement;
+			const selector = document.getElementById("filterSelect");
+			const changeFilterFn = (e) =>{
+				const isAll = selector.value==="All";
+				const filterFn = (filter) => {
+					root.style.setProperty(`--${filter}_display`, isAll || selector.value===filter ? "table-row" : "none");
+				}
+				filterFn("Pending");
+				filterFn("Accepted");
+				filterFn("Rejected");
+			};
+			selector.addEventListener("change", changeFilterFn);
+			changeFilterFn(null);
+			const rows = document.getElementsByTagName("tr");
+			for (let row of rows){
+				if (row.id!="headRow1" && row.id!="headRow"){
+					let date_td = row.children.item(4);
+					date_td.innerText = formatDate(date_td.innerText);
+				}
+			}
+		}
+
+		function insert(req){
+			var row = document.createElement("tr");
+			row.setAttribute("id", "row_"+req.reqId);
+			row.setAttribute("class",req.status);
+			console.log(req);
+			var td;
+			td = document.createElement("td");
+			td.innerText = req.insertId;
+			row.appendChild(td);
+			td = document.createElement("td");
+			td.innerText = req.user;
+			row.appendChild(td);
+			td = document.createElement("td");
+			td.innerText = req.type;
+			row.appendChild(td);
+			td = document.createElement("td");
+			td.innerText = req.reason;
+			row.appendChild(td);
+			td = document.createElement("td");
+			td.innerText = formatDate(req.lastModification);
+			console.log(formatDate(req.lastModification));
+			row.appendChild(td);
+			td = document.createElement("td");
+			td.innerText = req.status;
+			row.appendChild(td);
+			//headRow1.parentNode.insertBefore(row,headRow1.nextSibling);
+			headRow1.after(row);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>LOG IN PAGE</title>
+		<link rel="stylesheet" type="text/css" href="/styles/all.css">
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style type="text/css">
+		
+		#loginButton{
+		width:250px;
+	}	
+
+	#other{		
+		text-align:left;
+		padding:20px;
+	}
+	a:visited{
+		color: red;
+		background-color: transparent;
+		text-decoration: none;
+	}
+	a:link{
+		text-decoration: none;
+	}
+	a:hover {
+		color: yellow;
+		background-color: transparent;
+		text-decoration: underline;
+}
+
+	#invalid{
+		width: 72%;
+		height:40px;
+		position: relative;
+		text-align:center;
+		left: 13%;
+	}
+	#invalid p{	
+		background-color:rgb(255, 0, 0,0.6);
+		border-radius:10px;
+		padding-top:5px;
+		}
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	.topic{
+		max-width: 600px;
+		min-width: 400px;
+		width:auto;
+		background-color: rgb(0,0,0,0.6);
+		margin: 0 auto 10px auto;
+		color: white;
+		padding: 1% 0 1% 0;
+		text-align: center;
+		border-radius: 15px 15px 0px 0px;
+	}
+	#login{
+		padding: 10px;
+	}
+	body { 
+		background: url("/photos/coverPC.jpg") no-repeat center center fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+		font-family: sans-serif;
+	}
+
+	#cover{
+		max-width: 600px;	
+		min-width: 400px;		
+		background-color: rgb(0,0,0,0.5);
+		width: 100%;
+		margin: 0 auto;
+		border-bottom-left-radius: 15px;
+		border-bottom-right-radius: 15px;
+		padding-bottom: 15px;
+	}
+	#UserName, #password{
+		margin: 1%;
+		position: relative;
+		line-height: 40px;
+		border-radius: 6px;
+		padding: 0 2%;
+		font-size: 16px;
+		left: 10%;
+		right: 10%;
+		top: 20%;
+		width:70%;
+	}
+	#loginButton{
+		position: relative;
+		width: 80%;
+		background-color: rgb(225,220,220);
+		display: inline-block;
+		margin: 5% 0 0 11%;
+		font-size: 20px;
+		text-align: center;
+		border-radius: 12px;
+		border: 2px solid black;
+		padding: 5px 15px;
+		outline: none;
+		cursor: pointer;
+		transition: 0.25px;
+	}
+	i{
+		color:white;
+		font-size: 1.6rem}
+
+	.container{
+		
+		margin: 0 auto;
+		position: relative;
+		top : 150px;
+		width: 400px;
+		
+		
+	}		
+</style>
+</head>
+<body>
+	<div class="topic"><h1>Request Management System</h1></div>
+	<div id="cover">
+		<div id="invalid">
+			<% if (invalidLogin){ %>
+				<p><%= message %></p>
+			<% } %>
+		</div>
+
+		<form id="login" action="/signIn" method="post">
+			<div class="textbox">
+				<i class="fas fa-users" aria-hidden="true"></i>
+				<input placeholder="Username" type="text" id="UserName" name="UserName" required>
+			</div>
+	
+			<div class="textbox">
+				<i class="fas fa-user-lock"></i>
+				<input placeholder="Password" type="password" id="password" name="password" required>
+			</div>
+	
+			<button id="loginButton" type="submit" id="btn">Log in</button>
+		</form>
+			<p id="other"><a  href="/signIn/forget">forget your username or password?</a></p>   
+			<p id="other"><a  href="/cover">Do you need to go back?</a></p> 
+		
+	</div>
+	<script type='text/javascript'>
+		function pageRedirect() {
+			if(performance.navigation.type == 2){
+				if(	   document.referrer=="http://localhost:5000/dashboard"
+					|| document.referrer=="http://localhost:5000/"
+					|| document.referrer=="http://localhost:5000/cover"
+					|| document.referrer=="http://localhost:5000/checkLog"
+					|| document.referrer=="http://localhost:5000/signIn"
+					|| document.referrer=="http://localhost:5000/forget"){
+
+				window.location.href ="http://localhost:5000/checkLog";
+				}
+				}
+
+		}
+		setInterval(()=>{pageRedirect();}, 50);
+	</script>
+
+</body>
+</html>

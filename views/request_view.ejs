@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Thread <%= reqId %></title>
+    <link rel="stylesheet" type="text/css" href="/styles/all.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+      body {
+        background: url("/photos/i1.jpg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        font-family: sans-serif;
+      }
+      #top {
+        background-color: rgb(0, 0, 0, 0.2);
+        border-radius: 15px;
+        padding: 10px;
+        font-weight: bold;
+      }
+      #reason,
+      #reqID,
+      #madeBy,
+      #type,
+      #description,
+      #status,
+      #docs,
+      #lecturer {
+        display: block;
+        padding: 5px;
+        margin: 15px;
+      }
+      #date {
+        text-align: right;
+        display: block;
+        padding: auto;
+        margin-right: 1%;
+        padding-bottom: 5px;
+      }
+
+      #comments {
+        background-color: rgb(0, 0, 0, 0.1);
+        padding: 10px;
+        margin-top: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      #new_comment {
+        background-color: rgb(0, 0, 0, 0.1);
+        padding: 10px;
+        text-align: center;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+      #commentText {
+        width: 98%;
+        height: 100px;
+        font-size: 16px;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: rgb(255, 255, 255, 0.1);
+      }
+      #submitButton,
+      #acceptButton,
+      #rejectButton {
+        background-color: rgb(225, 220, 220);
+        position: relative;
+        display: inline;
+        margin: 10px;
+        font-size: 20px;
+        text-align: center;
+        border-radius: 12px;
+        border: 2px solid black;
+        padding: 5px 15px;
+        outline: none;
+        cursor: pointer;
+        transition: 0.25px;
+      }
+      #hideWord {
+        visibility: hidden;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        font-size: 100%;
+        background-color: red;
+        padding-left: 2px;
+      }
+      #iconBack #hideWord::after {
+        content: " ";
+        position: absolute;
+        /* To the left of the tooltip */
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent red transparent transparent;
+      }
+
+      #iconBack:hover #hideWord {
+        visibility: visible;
+      }
+      i {
+        color: white;
+        font-size: 2rem;
+        padding-left: 20px;
+      }
+
+      .comment {
+        border: 1px dotted black;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin: 10px;
+      }
+      .com_name,
+      .com_date {
+        display: block;
+        text-align: right;
+        font-size: 80%;
+        padding: 10px;
+        padding-top: 8px;
+        padding-bottom: 0px;
+      }
+      .com_comment {
+        display: block;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body onload="init();">
+    <div id="top">
+      <label id="reqID"
+        >Request Id : <span id="reqId"><%= reqId %></span></label
+      >
+      <label id="madeBy"
+        >Made by : <span id="userName"><%= user %></span></label
+      >
+      <label id="reason">Reason : <%= reason %></label>
+      <label id="type">Type : <%= type %></label>
+      <label id="lecturer"
+        >Lectuer : <span id="lecturer1"><%= lecturer %></span></label
+      >
+      <label id="description">Description : <%= description %></label>
+      <div>
+        <% if (files.length){ %>
+        <label id="docs">Supporting documents</label>
+        <ul>
+          <% files.forEach((file) => { %>
+          <li>
+            <a
+              href="/dashboard/request_view/file?req=<%= reqId %>&file=<%= file.filename %>"
+              target="_blank"
+              ><%= file.originalname %></a
+            >
+          </li>
+          <% }); %>
+        </ul>
+        <% } %>
+      </div>
+      <label id="date">Date : <span id="reqDate"><%= date %></span></label>
+      <label id="status"
+        >Status : <span id="reqStatus"><%= status %></span></label
+      >
+      <% if(isAdmin){ %>
+      <button id="acceptButton" onclick="sendStatus('accepted')">Accept</button>
+      <button id="rejectButton" onclick="sendStatus('rejected')">Reject</button>
+      <% } %>
+    </div>
+
+    <div id="comments">
+      <% comments.forEach((comment) => { %>
+      <div class="comment">
+        <label class="com_date"><%= comment.date %></label>
+        <label class="com_name"><%= comment.user %></label>
+        <label class="com_comment"><%= comment.comment %></label>
+      </div>
+      <% }); %>
+    </div>
+
+    <div id="new_comment">
+      <textarea id="commentText" placeholder="Comment" type="text"></textarea>
+      <button id="submitButton" type="">Send</button>
+    </div>
+
+    <script src="/scripts/socket.io.js"></script>
+    <script src="/scripts/utils.js"></script>
+    <script type="text/javascript">
+      const div_comments = document.getElementById("comments");
+      const commentText = document.getElementById("commentText");
+      const reqId = document.getElementById("reqId").innerText;
+      const socket = io();
+      function init() {
+        socket.on("newComment", function (data) {
+          console.log(data);
+          addComment(data);
+        });
+        socket.on("updateStatus", function (data) {
+          if (reqId === data.reqId) {
+            document.getElementById("reqStatus").innerText = data.status;
+          }
+        });
+        socket.emit("joinChat", reqId);
+        document
+          .getElementById("submitButton")
+          .addEventListener("click", (e) => {
+            let message = commentText.value;
+            if (message)
+              socket.emit("postComment", {
+                reqId: reqId,
+                comment: message,
+                student: document.getElementById("userName").innerText,
+                lecturer: document.getElementById("lecturer1").innerText,
+              });
+            commentText.value = "";
+          });
+        const reqDate = document.getElementById("reqDate");
+        reqDate.innerText = formatDate(reqDate.innerText);
+        for (let div_com of div_comments.children) {
+          let date_lbl = div_com.children.item(0);
+          date_lbl.innerText = formatDate(date_lbl.innerText);
+        }
+      }
+      function addComment(comment) {
+        var row = document.createElement("div");
+        row.setAttribute("class", "comment");
+        let lbl_com = document.createElement("label");
+        lbl_com.setAttribute("class", "com_comment");
+        lbl_com.innerText = comment.comment;
+        row.innerHTML = `<label class="com_date">${formatDate(comment.date)}</label>
+					<label class="com_name" >${comment.user}</label>`;
+        row.appendChild(lbl_com);
+        div_comments.appendChild(row);
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+      function sendStatus(status) {
+        socket.emit("setStatus", {
+          reqId: reqId,
+          status: status,
+          student: document.getElementById("userName").innerText,
+          lecturer: document.getElementById("lecturer1").innerText,
+        });
+      }
+    </script>
+  </body>
+</html>

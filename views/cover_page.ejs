@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Cover Page</title>
+    <style type="text/css">
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        /* The image used */
+        background-image: url("photos/coverPic.jpg");
+        clip-path: polygon(25% 0%, 100% 0, 100% 50%, 75% 100%, 0 99%, 0% 50%);
+        /* Full height */
+        height: 100%;
+        background-color: aqua;
+        background-blend-mode: darken;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: -1;
+        overflow: hidden;
+      }
+      html{
+  			overflow-x:scroll;
+  			overflow-y:scroll;}
+      div {
+        top: 20%;
+        position: absolute;
+        font-size: 400%;
+        font-family: "Lucida Console", "Courier New", monospace;
+        font-weight: bold;
+        position: relative;
+        color: #4d0000;
+        animation-iteration-count: 1;
+      }
+
+      #div1 {
+        animation: mymove1 5s;
+        animation-timing-function: linear;
+        animation-fill-mode: forwards;
+      }
+      #div2 {
+        animation: mymove2 5s;
+        animation-timing-function: ease;
+        animation-fill-mode: forwards;
+      }
+      #div3 {
+        animation: mymove3 5s;
+        animation-timing-function: ease-in;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes mymove1 {
+        from {
+          left: 0%;
+        }
+        to {
+          left: 40%;
+        }
+      }
+      @keyframes mymove2 {
+        from {
+          left: 0%;
+        }
+        to {
+          left: 37%;
+        }
+      }
+      @keyframes mymove3 {
+        from {
+          left: 0%;
+        }
+        to {
+          left: 35%;
+        }
+      }
+      footer {
+        position: absolute;
+        top: 70%;
+        left: 40%;
+      }
+      ul {
+        list-style-type: none;
+      }
+      li {
+        padding-left: 1%;
+        border:5%,white,solid;
+        background-color: black;
+        margin: 15%;
+        width: 110%;
+        padding: 20%;
+        
+      }
+      a {
+        text-decoration: none;
+        font-size: 200%;
+        color: #d4ff17;
+      }
+      li:hover{
+        transform:rotate3d(15,0,5,30deg);
+      }
+      a:hover {
+        color: rgb(19, 34, 243);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="div1">Royal</div>
+    <div id="div2">College</div>
+    <div id="div3">Basketball</div>
+    <footer>
+      <nav>
+        <ul>
+          <li class="w3-container w3-center w3-animate-opacity"><a href="/signIn">Sign in</a></li>
+          <li class="w3-container w3-center w3-animate-opacity"><a href="/signUp">Sign up</a></li>
+        </ul>
+      </nav>
+    </footer>
+  </body>
+</html>
